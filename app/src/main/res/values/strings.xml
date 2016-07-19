@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">League Match History</string>
+
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings">Settings</string>
+    <string name="About_This_App">About This App</string>
+</resources>
