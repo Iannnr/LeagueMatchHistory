@@ -2,6 +2,8 @@ package portfolio.ian.com.leaguematchhistory.Activities;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Point;
 import android.graphics.drawable.BitmapDrawable;
 import android.net.ConnectivityManager;
@@ -15,20 +17,26 @@ import android.util.DisplayMetrics;
 import android.view.Display;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.Surface;
 import android.view.WindowManager;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 
 import portfolio.ian.com.leaguematchhistory.*;
 import portfolio.ian.com.leaguematchhistory.Adapters.*;
 import portfolio.ian.com.leaguematchhistory.Constants.*;
 import portfolio.ian.com.leaguematchhistory.DataHandling.*;
 
+import org.apache.commons.lang3.StringUtils;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
+
+import org.apache.commons.*;
 
 
 public class matchHistoryActivity extends FragmentActivity {
@@ -45,6 +53,9 @@ public class matchHistoryActivity extends FragmentActivity {
     ChampionSplashHeader championHeader = new ChampionSplashHeader();
     int position;
     private String APIKey = "";
+    static Boolean backgroundLoaded = false;
+    static BitmapDrawable background;
+    RelativeLayout relativeLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,23 +78,49 @@ public class matchHistoryActivity extends FragmentActivity {
         //DisplayMetrics metrics = new DisplayMetrics();
         //headerPhoto.setMaxHeight(getWindowManager().getDefaultDisplay().getWidth());
         headerPhoto = (ImageView) findViewById(R.id.imageView);
-        try {
-            BitmapDrawable background = new BitmapDrawable(BitmapDecoding.decodeSampledBitmapFromResource(getResources(), championHeader.champNamePhoto(getApplicationContext(), champName.replace(" ", "")), getWindowManager().getDefaultDisplay().getWidth(), getWindowManager().getDefaultDisplay().getHeight()));
-            headerPhoto.setImageDrawable(background);
-            headerPhoto.setAdjustViewBounds(true);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
+        relativeLayout = (RelativeLayout) findViewById(R.id.matchHistoryLayout);
+        //setLayoutBackground(relativeLayout);
 
         tabbedView = (ViewPager) findViewById(R.id.view_pager);
         //tabbedView.setBackground(championHeader.champNamePhoto(getResources(), champName));
 
         new AsyncTaskParseJSON().execute();
+        String test = StringUtils.capitalize(championHeader.getChampionSkinName(champName.replace(" ", "")));
+        new DownloadImage().execute("http://ddragon.leagueoflegends.com/cdn/img/champion/splash/" + test + ".jpg");
     }
 
-    private Boolean getInternetConnection(Context mContext)
-    {
+    void setLayoutBackground(RelativeLayout relativeLayout, BitmapDrawable bitmap) {
+        try {
+
+            if (getWindowManager().getDefaultDisplay().getRotation() == Surface.ROTATION_90
+                    || getWindowManager().getDefaultDisplay().getRotation() == Surface.ROTATION_270) {
+                if (!backgroundLoaded) {
+                    //background = new BitmapDrawable(BitmapDecoding.decodeSampledBitmapFromResource(getResources(), championHeader.champNamePhoto(getApplicationContext(), champName.replace(" ", "")), getWindowManager().getDefaultDisplay().getWidth(), getWindowManager().getDefaultDisplay().getHeight()));
+                    relativeLayout.setBackground(bitmap);
+                    headerPhoto.setBackground(null);
+                    backgroundLoaded = true;
+                } else {
+                    relativeLayout.setBackground(bitmap);
+                }
+            } else if (getWindowManager().getDefaultDisplay().getRotation() == Surface.ROTATION_0
+                    || getWindowManager().getDefaultDisplay().getRotation() == Surface.ROTATION_180) {
+                //background = new BitmapDrawable(bitmap);
+                relativeLayout.setBackground(null);
+                headerPhoto.setAdjustViewBounds(true);
+
+                headerPhoto.setImageDrawable(bitmap);
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    protected void onPause() {
+        super.onPause();
+    }
+
+    private Boolean getInternetConnection(Context mContext) {
         ConnectivityManager connectivityManager = (ConnectivityManager) mContext.getApplicationContext().getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
         Boolean internetConnection = activeNetworkInfo != null && activeNetworkInfo.isConnected();
@@ -100,8 +137,7 @@ public class matchHistoryActivity extends FragmentActivity {
 
             if (internetConnection) {
                 jsonData.add(parseJSON.callAPI(matchHistoryURL));
-            }
-            else {
+            } else {
             }
             return jsonData;
         }
@@ -160,6 +196,37 @@ public class matchHistoryActivity extends FragmentActivity {
         }
     }
 
+    private class DownloadImage extends AsyncTask<String, Void, Bitmap> {
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+        }
+
+        @Override
+        protected Bitmap doInBackground(String... URL) {
+
+            String imageURL = URL[0];
+
+            Bitmap bitmap = null;
+            try {
+                // Download Image from URL
+                InputStream input = new java.net.URL(imageURL).openStream();
+                // Decode Bitmap
+                bitmap = BitmapFactory.decodeStream(input);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            return bitmap;
+        }
+
+        @Override
+        protected void onPostExecute(Bitmap result) {
+            // Set the bitmap into ImageView
+            BitmapDrawable resultAsDrawable = new BitmapDrawable(result);
+            setLayoutBackground(relativeLayout, resultAsDrawable);
+        }
+    }
 
     public class AsyncTaskParseRuneData extends AsyncTask<ArrayList<Rune>, String, String> {
 
@@ -167,40 +234,35 @@ public class matchHistoryActivity extends FragmentActivity {
 
         @Override
         protected String doInBackground(ArrayList<Rune>... params) {
-             try {
-                 clearArrayList();
-                 int count = 0, max = 30;
-                 if (getInternetConnection(matchHistoryActivity.this)) {
-                     for (int i = 0; count < max; i++)
-                     {
+            try {
+                clearArrayList();
+                int count = 0, max = 30;
+                if (getInternetConnection(matchHistoryActivity.this)) {
+                    for (int i = 0; count < max; i++) {
                         runeJSON = parseJSON.callAPI("https://global.api.pvp.net/api/lol/static-data/euw/v1.2/rune/"
-                             + params[0].get(i).runeId + "?api_key=" + APIKey);
+                                + params[0].get(i).runeId + "?api_key=" + APIKey);
 
                         JSONObject jsonRune = new JSONObject(runeJSON);
                         Rune mRunes = new Rune(params[0].get(i).runeId, params[0].get(i).rank,
                                 jsonRune.getString("name"), jsonRune.getString("description"));
                         Rune.runes.add(mRunes);
-                         //makes sure that only 30 runes get added
-                         count += Integer.parseInt(params[0].get(i).rank.toString());
-                     }
-                     offlineRuneDbHelper.resetData();
-                     for (int i = 0; i < Rune.runes.size(); i++)
-                     {
-                         offlineRuneDbHelper.insertData("runeId: " + Rune.runes.get(i).runeId + " rank: "
-                                 + Rune.runes.get(i).rank + " name: " + Rune.runes.get(i).name
-                                 + " description: " + Rune.runes.get(i).description);
-                     }
-                 }
-             }
-            catch (Exception e)
-            {
+                        //makes sure that only 30 runes get added
+                        count += Integer.parseInt(params[0].get(i).rank.toString());
+                    }
+                    offlineRuneDbHelper.resetData();
+                    for (int i = 0; i < Rune.runes.size(); i++) {
+                        offlineRuneDbHelper.insertData("runeId: " + Rune.runes.get(i).runeId + " rank: "
+                                + Rune.runes.get(i).rank + " name: " + Rune.runes.get(i).name
+                                + " description: " + Rune.runes.get(i).description);
+                    }
+                }
+            } catch (Exception e) {
                 e.printStackTrace();
             }
             return null;
         }
 
-        void clearArrayList()
-        {
+        void clearArrayList() {
             Rune.runes = null;
             Rune.runes = new ArrayList<>();
         }
@@ -233,7 +295,7 @@ public class matchHistoryActivity extends FragmentActivity {
         return super.onOptionsItemSelected(item);
     }
 
-        }
+}
 
 
 
