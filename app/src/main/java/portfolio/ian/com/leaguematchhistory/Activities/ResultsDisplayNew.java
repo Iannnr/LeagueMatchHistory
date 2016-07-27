@@ -30,6 +30,7 @@ import portfolio.ian.com.leaguematchhistory.Adapters.*;
 import portfolio.ian.com.leaguematchhistory.Constants.*;
 import portfolio.ian.com.leaguematchhistory.DataHandling.*;
 
+import org.apache.commons.lang3.*;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -168,7 +169,7 @@ public class ResultsDisplayNew extends Activity {
                             gameStats.champName = partic.champName;
                             //Match.jsonData = jO.toString();
                             m.mapName = Match.jsonData.get(i).split("\"map\":")[1].split(",")[0];
-                            m.queueType = Match.jsonData.get(i).split("\"queue\":")[1];
+                            m.queueType = StringUtils.capitalize(Match.jsonData.get(i).split("\"queue\":")[1]);
                             m.matchURL = Match.jsonData.get(i).split("\"matchURL\":")[1].split(",")[0];
                             m.participant = partic;
                             matchHistory.add(m);
@@ -306,7 +307,7 @@ public class ResultsDisplayNew extends Activity {
 
             for (int i = 0; i < matchID.size(); i++) {
                 String matchInformationURL = "https://" + region + ".api.pvp.net/api/lol/" + region + "/v2.2/match/" +
-                        matchID.toArray()[i] + "?api_key=" + APIKey; //concatenated string to declare unique match history IDs
+                        matchID.get(i) + "?api_key=" + APIKey; //concatenated string to declare unique match history IDs
                 String json = jParser.callAPI(matchInformationURL);
 
                 //Fixes the problem where a secondary search would always crash the application, json would sometimes be null
@@ -468,6 +469,10 @@ public class ResultsDisplayNew extends Activity {
                         e.printStackTrace();
                     }
 
+            }
+            if (matchHistoryIDs.size() == 0)
+            {
+                getMatchHistoryByName(URLUsername);
             }
             return matchHistoryIDs;
         }

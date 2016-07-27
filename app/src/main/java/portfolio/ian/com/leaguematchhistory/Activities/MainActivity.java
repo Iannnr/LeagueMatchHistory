@@ -30,10 +30,9 @@ public class MainActivity extends Activity {
     private Handler handler = new Handler();
     ProgressBar mProgressBar;
     ListView list;
-    Boolean executed = false;
-    Intent facebook,twitter, matchHistory, camera, sensors, other;
+    static Boolean executed = false;
+    Intent facebook, twitter, matchHistory, camera, sensors;
     APIKeyEncryption APIEncryption;
-    BitmapDecoding decodeBitmap = new BitmapDecoding();
     final int MAXPROGRESS = 35;
 
     @Override
@@ -58,8 +57,7 @@ public class MainActivity extends Activity {
         new Thread(new Runnable() {
             public void run() {
                 //for (progressStatus = 0; progressStatus < 50; progressStatus++)
-                while (progressStatus <= mProgressBar.getMax())
-                {
+                while (progressStatus <= mProgressBar.getMax()) {
                     progressStatus += 1;
                     // Update the progress bar and display the
                     //current value in the text view
@@ -90,8 +88,8 @@ public class MainActivity extends Activity {
         }).start();
 
     }
-    void showMenu()
-    {
+
+    void showMenu() {
         list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view,
@@ -102,7 +100,7 @@ public class MainActivity extends Activity {
             }
         });
 
-        String[] activities = new String[] { "Facebook", "Twitter", "Match History", "Camera", "Sensors", "Other","Other","Other","Other","Other","Other","Other",};
+        String[] activities = new String[]{"Facebook", "Twitter", "Match History", "Camera", "Sensors", "Other", "Other", "Other", "Other", "Other", "Other", "Other",};
 
         final ArrayList<String> arrayList = new ArrayList<>();
         for (int i = 0; i < activities.length; ++i) {
@@ -152,8 +150,6 @@ public class MainActivity extends Activity {
     }
 
 
-
-
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
@@ -176,27 +172,25 @@ public class MainActivity extends Activity {
         return super.onOptionsItemSelected(item);
     }
 
-    private class encryptAsyncTask extends AsyncTask<String, String, String>
-    {
+    private class encryptAsyncTask extends AsyncTask<String, String, String> {
 
         @Override
         protected String doInBackground(String... params) {
-            APIEncryption.encryptAPIKey(getApplicationContext(), "", "na");
             APIEncryption.encryptAPIKey(getApplicationContext(), "", "euw");
             return null;
         }
 
         @Override
-        protected void onPreExecute()
-        {
+        protected void onPreExecute() {
             progressText.setText("Encypting API keys...");
         }
 
         @Override
-        protected void onPostExecute(String s)
-        {
+        protected void onPostExecute(String s) {
+
             progressText.setVisibility(View.GONE);
             startActivity(matchHistory);
+
         }
     }
 }
