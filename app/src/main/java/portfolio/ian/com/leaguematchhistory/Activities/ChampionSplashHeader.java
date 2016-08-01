@@ -1,14 +1,7 @@
 package portfolio.ian.com.leaguematchhistory.Activities;
 
-import android.content.Context;
-import android.graphics.Bitmap;
-
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Random;
-
-import portfolio.ian.com.leaguematchhistory.Constants.BitmapDecoding;
-import portfolio.ian.com.leaguematchhistory.R;
 
 
 /**

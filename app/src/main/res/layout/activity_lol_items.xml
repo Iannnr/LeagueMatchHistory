@@ -15,6 +15,7 @@
         android:id="@+id/itemList"
         android:layout_below="@+id/Fragment1"
         android:layout_alignParentStart="true"
-        android:layout_alignParentEnd="true" />
+        android:layout_alignParentEnd="true"
+        android:dividerHeight="0dp" />
 
 </RelativeLayout>

@@ -13,12 +13,26 @@ import java.util.ArrayList;
 public class InGameItems {
 
     public Long item1, item2, item3, item4, item5, item6, item7;
-    public Drawable image;
-    public String name, plaintext;
+    public Drawable itemImage;
+    public String name, description, plaintext;
+    //public static ArrayList<Long> items = new ArrayList<>();
 
-    public static ArrayList<Long> items = new ArrayList<>();
+    public InGameItems(Long item1, Long item2, Long item3, Long item4, Long item5, Long item6, Long item7, Drawable image, String name, String description, String plaintext)
+    {
+        this.item1 = item1;
+        this.item2 = item2;
+        this.item3 = item3;
+        this.item4 = item4;
+        this.item5 = item5;
+        this.item6 = item6;
+        this.item7 = item7;
+        this.itemImage = image;
+        this.name = name;
+        this.description  = description;
+        this.plaintext = plaintext;
+    }
 
-    itemInfo itemIdToImage(Resources resource, long runeID) {
+    static itemInfo itemIdToImage(Resources resource, long runeID) {
         String runeId = String.valueOf(runeID);
         itemInfo item = new itemInfo();
         switch (runeId) {
@@ -1157,7 +1171,7 @@ public class InGameItems {
         }
         return item;
     }
-    public class itemInfo
+    static class itemInfo
     {
         public Drawable itemImage;
         public String name, description, plaintext;

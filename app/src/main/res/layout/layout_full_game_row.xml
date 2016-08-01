@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/Summoner1Icon"
+        android:src="@drawable/aatrox_square_"
+        android:layout_alignParentLeft="true"
+        android:layout_marginLeft="0dp"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="0dp"
+        android:maxHeight="64dp"
+        android:maxWidth="64dp"
+        android:adjustViewBounds="true" />
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/Summoner2Icon"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
+        android:src="@drawable/aatrox_square_"
+        android:maxWidth="64dp"
+        android:maxHeight="64dp"
+        android:adjustViewBounds="true" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="Aurelion Sol"
+        android:id="@+id/Summoner1Champ"
+        android:layout_toEndOf="@+id/Summoner1Icon"
+        android:layout_alignParentTop="true"
+        android:layout_alignBottom="@+id/Summoner1KDA" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="15/15/15"
+        android:id="@+id/Summoner1KDA"
+        android:layout_above="@+id/Summoner1IGN"
+        android:layout_toEndOf="@+id/Summoner1Icon" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="15/15/15"
+        android:id="@+id/Summoner2KDA"
+        android:layout_below="@+id/Summoner2Champ"
+        android:layout_toStartOf="@+id/Summoner2Icon" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="Aurelion Sol"
+        android:id="@+id/Summoner2Champ"
+        android:layout_alignParentTop="true"
+        android:layout_toStartOf="@+id/Summoner2Icon" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="Summoner Name"
+        android:id="@+id/Summoner1IGN"
+        android:layout_alignTop="@+id/Summoner2IGN"
+        android:layout_toEndOf="@+id/Summoner1Icon" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="Summoner Name"
+        android:id="@+id/Summoner2IGN"
+        android:layout_below="@+id/Summoner2KDA"
+        android:layout_toStartOf="@+id/Summoner2Icon" />
+</RelativeLayout>

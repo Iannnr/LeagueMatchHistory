@@ -26,6 +26,7 @@ import android.widget.Toast;
 
 
 import portfolio.ian.com.leaguematchhistory.*;
+import portfolio.ian.com.leaguematchhistory.Activities.ActivityDataHandling.SummonerStats;
 import portfolio.ian.com.leaguematchhistory.Adapters.*;
 import portfolio.ian.com.leaguematchhistory.Constants.*;
 import portfolio.ian.com.leaguematchhistory.DataHandling.*;
@@ -321,6 +322,7 @@ public class ResultsDisplayNew extends Activity {
                     }
                 }
                 //handling that includes all JSON-related data
+                SummonerStats.fullGameJson = json;
                 try {
                     //Save information from matchInformation API call
                     JSONObject matchDetails = new JSONObject(json);
@@ -832,7 +834,7 @@ class ListViewAdapter extends BaseAdapter {
 
         if (convertView == null)
         {
-            convertView=inflater.inflate(R.layout.column_row, null);
+            convertView=inflater.inflate(R.layout.layout_results_columns, null);
             holder = new ViewHolder();
 
             holder.txtFirst = (TextView) convertView.findViewById(R.id.ChampLvl);

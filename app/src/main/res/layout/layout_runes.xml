@@ -17,13 +17,13 @@
         android:id="@+id/Amount"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_weight="0.10"
+        android:layout_weight="0.1"
         android:layout_gravity="center_horizontal"
-        android:paddingLeft="32dp"
-        android:paddingTop="16dp"
-        android:paddingBottom="16dp"
         android:gravity="center"
-        android:alpha="1" />
+        android:textColor="#ffffff"
+        android:backgroundTintMode="src_over"
+        android:minHeight="64dp"
+        android:text="1" />
 
     <View
         android:layout_width="2dp"
@@ -35,9 +35,11 @@
         android:layout_height="wrap_content"
         android:layout_weight="0.25"
         android:layout_gravity="center_horizontal"
-        android:paddingTop="16dp"
         android:gravity="center"
-        android:alpha="1" />
+        android:textColor="#ffffff"
+        android:backgroundTintMode="src_over"
+        android:minHeight="64dp"
+        android:text="1" />
 
     <View
         android:layout_width="2dp"
@@ -49,8 +51,10 @@
         android:layout_height="wrap_content"
         android:layout_weight="0.25"
         android:layout_gravity="center_horizontal"
-        android:paddingTop="16dp"
         android:gravity="center"
-        android:alpha="1" />
+        android:textColor="#ffffff"
+        android:backgroundTintMode="src_over"
+        android:minHeight="64dp"
+        android:text="1" />
 
 </LinearLayout>

@@ -11,7 +11,6 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.ListView;
@@ -171,13 +170,18 @@ public class LolStats extends Fragment {
             }
             newAdapter = new StatsListViewAdapter(thisActivity, listHash);
             listView.setAdapter(newAdapter);
+            listView.setFocusable(false);
+            listView.setFocusableInTouchMode(false);
 
-            listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                @Override
-                public void onItemClick(AdapterView<?> parent, View view,
-                                        int position, long id) {
-                }
-            });
+
+
+            //listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            //    @Override
+            //    public void onItemClick(AdapterView<?> parent, View view,
+            //                            int position, long id) {
+            //    }
+            //});
+
         }
         catch (ArrayIndexOutOfBoundsException e)
         {
@@ -240,7 +244,7 @@ class StatsListViewAdapter extends BaseAdapter {
 
         if (convertView == null)
         {
-            convertView=inflater.inflate(R.layout.column_stats, null);
+            convertView=inflater.inflate(R.layout.layout_stats_columns, null);
             holder = new ViewHolder();
 
             holder.txtFirst = (TextView) convertView.findViewById(R.id.statsColumn);

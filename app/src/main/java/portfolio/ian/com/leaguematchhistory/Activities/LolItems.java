@@ -47,7 +47,7 @@ public class LolItems extends Fragment {
             listViewLandscape = (ListView) v.findViewById(R.id.itemList);
         }
         if (rotation == Surface.ROTATION_0 || rotation == Surface.ROTATION_180) {
-            v = inflater.inflate(R.layout.item_portrait_layout, container, false);
+            v = inflater.inflate(R.layout.layout_item_portrait, container, false);
             listViewPortrait = (ListView) v.findViewById(R.id.listView3);
         }
 
@@ -78,21 +78,18 @@ public class LolItems extends Fragment {
              try {
                  clearArrayList();
 
-
-                 for (int i = 0; i < 1; i++) {
-                     InGameItems item = new InGameItems();
-                     item.item1 = Long.valueOf(items.get(i));
-                     item.item2 = Long.valueOf(items.get(i + 1));
-                     item.item3 = Long.valueOf(items.get(i + 2));
-                     item.item4 = Long.valueOf(items.get(i + 3));
-                     item.item5 = Long.valueOf(items.get(i + 4));
-                     item.item6 = Long.valueOf(items.get(i + 5));
-                     item.item7 = Long.valueOf(items.get(i + 6));
+                     InGameItems item = new InGameItems(Long.valueOf(items.get(0)), Long.valueOf(items.get(1)), Long.valueOf(items.get(2)),
+                             Long.valueOf(items.get(3)), Long.valueOf(items.get(4)), Long.valueOf(items.get(5)), Long.valueOf(items.get(6)),
+                                     null, null, null, null);
+                     //item.item1 = Long.valueOf(items.get(i));
+                     //item.item2 = Long.valueOf(items.get(i + 1));
+                     //item.item3 = Long.valueOf(items.get(i + 2));
+                     //item.item4 = Long.valueOf(items.get(i + 3));
+                     //item.item5 = Long.valueOf(items.get(i + 4));
+                     //item.item6 = Long.valueOf(items.get(i + 5));
+                     //item.item7 = Long.valueOf(items.get(i + 6));
                      itemArrayList.add(item);
 
-
-
-                 }
                  landscapeAdapter = new ItemsViewAdapterLandscape(getContext());
                  listViewLandscape.setAdapter(landscapeAdapter);
              } catch (Exception e) {
@@ -104,10 +101,11 @@ public class LolItems extends Fragment {
              clearArrayList();
              for (int i = 0; i < items.size(); i++)
              {
-                 InGameItems item = new InGameItems();
-                 item.image = item.itemIdToImage(getResources(), Long.valueOf(items.get(i))).itemImage;
-                 item.name = item.itemIdToImage(getResources(), Long.valueOf(items.get(i))).name;
-                 item.plaintext = item.itemIdToImage(getResources(), Long.valueOf(items.get(i))).plaintext;
+                 InGameItems item = new InGameItems(null, null, null, null, null, null, null, InGameItems.itemIdToImage(getResources(), Long.valueOf(items.get(i))).itemImage,
+                         InGameItems.itemIdToImage(getResources(), Long.valueOf(items.get(i))).name, null, InGameItems.itemIdToImage(getResources(), Long.valueOf(items.get(i))).plaintext);
+                 //item.image = item.itemIdToImage(getResources(), Long.valueOf(items.get(i))).itemImage;
+                 //item.name = item.itemIdToImage(getResources(), Long.valueOf(items.get(i))).name;
+                 //item.plaintext = item.itemIdToImage(getResources(), Long.valueOf(items.get(i))).plaintext;
                  itemArrayList.add(item);
 
 
@@ -153,34 +151,34 @@ public class LolItems extends Fragment {
         @Override
         public View getView(int position, View convertView, ViewGroup parent) {
             View rowView;
-            rowView = inflater.inflate(R.layout.item_row_layout, null);
-            final InGameItems itemImage = new InGameItems();
+            rowView = inflater.inflate(R.layout.layout_item_row, null);
+            //final InGameItems itemImage = new InGameItems();
 
             try {
 
                 ImageView itemImage1 = (ImageView) rowView.findViewById(R.id.item1);
-                itemImage1.setImageDrawable(itemImage.itemIdToImage(getResources(), Long.valueOf(itemArrayList.get(0).item1)).itemImage);
+                itemImage1.setImageDrawable(InGameItems.itemIdToImage(getResources(), Long.valueOf(itemArrayList.get(0).item1)).itemImage);
                 ImageView itemImage2 = (ImageView) rowView.findViewById(R.id.item2);
-                itemImage2.setImageDrawable(itemImage.itemIdToImage(getResources(), Long.valueOf(itemArrayList.get(0).item2)).itemImage);
+                itemImage2.setImageDrawable(InGameItems.itemIdToImage(getResources(), Long.valueOf(itemArrayList.get(0).item2)).itemImage);
                 ImageView itemImage3= (ImageView) rowView.findViewById(R.id.item3);
-                itemImage3.setImageDrawable(itemImage.itemIdToImage(getResources(), Long.valueOf(itemArrayList.get(0).item3)).itemImage);
+                itemImage3.setImageDrawable(InGameItems.itemIdToImage(getResources(), Long.valueOf(itemArrayList.get(0).item3)).itemImage);
                 ImageView itemImage4 = (ImageView) rowView.findViewById(R.id.item4);
-                itemImage4.setImageDrawable(itemImage.itemIdToImage(getResources(), Long.valueOf(itemArrayList.get(0).item4)).itemImage);
+                itemImage4.setImageDrawable(InGameItems.itemIdToImage(getResources(), Long.valueOf(itemArrayList.get(0).item4)).itemImage);
                 ImageView itemImage5 = (ImageView) rowView.findViewById(R.id.item5);
-                itemImage5.setImageDrawable(itemImage.itemIdToImage(getResources(), Long.valueOf(itemArrayList.get(0).item5)).itemImage);
+                itemImage5.setImageDrawable(InGameItems.itemIdToImage(getResources(), Long.valueOf(itemArrayList.get(0).item5)).itemImage);
                 ImageView itemImage6 = (ImageView) rowView.findViewById(R.id.item6);
-                itemImage6.setImageDrawable(itemImage.itemIdToImage(getResources(), Long.valueOf(itemArrayList.get(0).item6)).itemImage);
+                itemImage6.setImageDrawable(InGameItems.itemIdToImage(getResources(), Long.valueOf(itemArrayList.get(0).item6)).itemImage);
                 ImageView itemImage7 = (ImageView) rowView.findViewById(R.id.item7);
-                itemImage7.setImageDrawable(itemImage.itemIdToImage(getResources(), Long.valueOf(itemArrayList.get(0).item7)).itemImage);
+                itemImage7.setImageDrawable(InGameItems.itemIdToImage(getResources(), Long.valueOf(itemArrayList.get(0).item7)).itemImage);
 
                 itemImage1.setOnTouchListener(new View.OnTouchListener() {
 
                     @Override
                     public boolean onTouch(View v, MotionEvent event) {
                         // TODO Auto-generated method stub
-                        String text = itemImage.itemIdToImage(getResources(), Long.valueOf(itemArrayList.get(0).item1)).name;
-                        ToastMessage.message(getContext(), itemImage.itemIdToImage(getResources(), Long.valueOf(itemArrayList.get(0).item1)).name
-                                + "\n" + itemImage.itemIdToImage(getResources(), Long.valueOf(itemArrayList.get(0).item1)).plaintext);
+                        String text = InGameItems.itemIdToImage(getResources(), Long.valueOf(itemArrayList.get(0).item1)).name;
+                        ToastMessage.message(getContext(), InGameItems.itemIdToImage(getResources(), Long.valueOf(itemArrayList.get(0).item1)).name
+                                + "\n" + InGameItems.itemIdToImage(getResources(), Long.valueOf(itemArrayList.get(0).item1)).plaintext);
                         return false;
                     }
                 });
@@ -190,8 +188,8 @@ public class LolItems extends Fragment {
                     @Override
                     public boolean onTouch(View v, MotionEvent event) {
                         // TODO Auto-generated method stub
-                        ToastMessage.message(getContext(), itemImage.itemIdToImage(getResources(), Long.valueOf(itemArrayList.get(0).item2)).name
-                                + "\n" +  itemImage.itemIdToImage(getResources(), Long.valueOf(itemArrayList.get(0).item2)).plaintext);
+                        ToastMessage.message(getContext(), InGameItems.itemIdToImage(getResources(), Long.valueOf(itemArrayList.get(0).item2)).name
+                                + "\n" +  InGameItems.itemIdToImage(getResources(), Long.valueOf(itemArrayList.get(0).item2)).plaintext);
                         return false;
                     }
                 });
@@ -201,8 +199,8 @@ public class LolItems extends Fragment {
                     @Override
                     public boolean onTouch(View v, MotionEvent event) {
                         // TODO Auto-generated method stub
-                        ToastMessage.message(getContext(), itemImage.itemIdToImage(getResources(), Long.valueOf(itemArrayList.get(0).item3)).name
-                                + "\n" +  itemImage.itemIdToImage(getResources(), Long.valueOf(itemArrayList.get(0).item3)).plaintext);
+                        ToastMessage.message(getContext(), InGameItems.itemIdToImage(getResources(), Long.valueOf(itemArrayList.get(0).item3)).name
+                                + "\n" +  InGameItems.itemIdToImage(getResources(), Long.valueOf(itemArrayList.get(0).item3)).plaintext);
                         return false;
                     }
                 });
@@ -212,8 +210,8 @@ public class LolItems extends Fragment {
                     @Override
                     public boolean onTouch(View v, MotionEvent event) {
                         // TODO Auto-generated method stub
-                        ToastMessage.message(getContext(), itemImage.itemIdToImage(getResources(), Long.valueOf(itemArrayList.get(0).item4)).name
-                                + "\n" + itemImage.itemIdToImage(getResources(), Long.valueOf(itemArrayList.get(0).item4)).plaintext);
+                        ToastMessage.message(getContext(), InGameItems.itemIdToImage(getResources(), Long.valueOf(itemArrayList.get(0).item4)).name
+                                + "\n" + InGameItems.itemIdToImage(getResources(), Long.valueOf(itemArrayList.get(0).item4)).plaintext);
                         return false;
                     }
                 });
@@ -223,8 +221,8 @@ public class LolItems extends Fragment {
                     @Override
                     public boolean onTouch(View v, MotionEvent event) {
                         // TODO Auto-generated method stub
-                        ToastMessage.message(getContext(), itemImage.itemIdToImage(getResources(), Long.valueOf(itemArrayList.get(0).item5)).name
-                                + "\n" + itemImage.itemIdToImage(getResources(), Long.valueOf(itemArrayList.get(0).item5)).plaintext);
+                        ToastMessage.message(getContext(), InGameItems.itemIdToImage(getResources(), Long.valueOf(itemArrayList.get(0).item5)).name
+                                + "\n" + InGameItems.itemIdToImage(getResources(), Long.valueOf(itemArrayList.get(0).item5)).plaintext);
                         return false;
                     }
                 });
@@ -234,8 +232,8 @@ public class LolItems extends Fragment {
                     @Override
                     public boolean onTouch(View v, MotionEvent event) {
                         // TODO Auto-generated method stub
-                        ToastMessage.message(getContext(), itemImage.itemIdToImage(getResources(), Long.valueOf(itemArrayList.get(0).item6)).name
-                                + "\n" + itemImage.itemIdToImage(getResources(), Long.valueOf(itemArrayList.get(0).item6)).plaintext);
+                        ToastMessage.message(getContext(), InGameItems.itemIdToImage(getResources(), Long.valueOf(itemArrayList.get(0).item6)).name
+                                + "\n" + InGameItems.itemIdToImage(getResources(), Long.valueOf(itemArrayList.get(0).item6)).plaintext);
                         return false;
                     }
                 });
@@ -245,8 +243,8 @@ public class LolItems extends Fragment {
                     @Override
                     public boolean onTouch(View v, MotionEvent event) {
                         // TODO Auto-generated method stub
-                        ToastMessage.message(getContext(), itemImage.itemIdToImage(getResources(), Long.valueOf(itemArrayList.get(0).item7)).name
-                                + "\n" + itemImage.itemIdToImage(getResources(), Long.valueOf(itemArrayList.get(0).item7)).plaintext);
+                        ToastMessage.message(getContext(), InGameItems.itemIdToImage(getResources(), Long.valueOf(itemArrayList.get(0).item7)).name
+                                + "\n" + InGameItems.itemIdToImage(getResources(), Long.valueOf(itemArrayList.get(0).item7)).plaintext);
                         return false;
                     }
                 });
@@ -266,7 +264,6 @@ public class LolItems extends Fragment {
         Activity activity;
         private Context mContext;
         private LayoutInflater inflater = null;
-        InGameItems item = new InGameItems();
 
         public ItemsViewAdapter(Context c) {
             mContext = c;
@@ -292,12 +289,12 @@ public class LolItems extends Fragment {
         public View getView(int position, View convertView, ViewGroup parent) {
             View rowView = null;
             try {
-                rowView = inflater.inflate(R.layout.item_row_layout_portrait, null);
+                rowView = inflater.inflate(R.layout.layout_item_row_portrait, null);
                 ImageView itemImage = (ImageView) rowView.findViewById(R.id.itemImage);
                 TextView itemName = (TextView) rowView.findViewById(R.id.itemName);
                 TextView plaintext = (TextView) rowView.findViewById(R.id.itemPlaintext);
 
-                itemImage.setImageDrawable(itemArrayList.get(position).image);
+                itemImage.setImageDrawable(itemArrayList.get(position).itemImage);
                 itemName.setText(itemArrayList.get(position).name);
                 plaintext.setText(itemArrayList.get(position).plaintext);
 

@@ -74,10 +74,6 @@ public class LolRunes extends Fragment {
                     for (int i = 0; i < Rune.runes.size(); i++) {
                         Rune rune = new Rune(Rune.runes.get(i).runeId,Rune.runes.get(i).rank,
                                 Rune.runes.get(i).name, Rune.runes.get(i).description);
-                        //rune.runeId = Rune.runes.get(i).runeId;
-                        //rune.rank = Rune.runes.get(i).rank;
-                        //rune.name = Rune.runes.get(i).name;
-                        //rune.description = Rune.runes.get(i).description;
                         runeArrayList.add(rune);
                     }
                 } else if (!checkInternetConnection(getContext())) {
@@ -87,10 +83,6 @@ public class LolRunes extends Fragment {
                                 Long.valueOf(runes.get(i).split("rank: ")[1].split(" name: ")[0]),
                                         runes.get(i).split("name: ")[1].split(" description: ")[0],
                                         runes.get(i).split("description: ")[1]);
-                        //rune.runeId = Long.valueOf(runes.get(i).split("runeId: ")[1].split(" rank: ")[0]);
-                        //rune.rank = Long.valueOf(runes.get(i).split("rank: ")[1].split(" name: ")[0]);
-                        //rune.name = runes.get(i).split("name: ")[1].split(" description: ")[0];
-                        //rune.description = runes.get(i).split("description: ")[1];
                         runeArrayList.add(rune);
                     }
                 }
@@ -137,7 +129,7 @@ public class LolRunes extends Fragment {
         @Override
         public View getView(int position, View convertView, ViewGroup parent) {
             View rowView;
-            rowView = inflater.inflate(R.layout.runes_columns, null);
+            rowView = inflater.inflate(R.layout.layout_runes, null);
 
             try {
 

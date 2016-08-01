@@ -163,7 +163,7 @@ public class matchHistoryActivity extends FragmentActivity {
         protected void onPostExecute(ArrayList<String> s) {
             try {
                 if (!loaded) {
-
+                    listFragments.add(new FullGameInfo());
                     listFragments.add(new LolStats());
 
                     LolStats LS = new LolStats();
