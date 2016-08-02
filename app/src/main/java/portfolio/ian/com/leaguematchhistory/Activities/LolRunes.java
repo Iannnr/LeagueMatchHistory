@@ -17,10 +17,11 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import portfolio.ian.com.leaguematchhistory.*;
-import portfolio.ian.com.leaguematchhistory.Adapters.*;
-
 import java.util.ArrayList;
+
+import portfolio.ian.com.leaguematchhistory.Activities.ActivityDataHandling.Rune;
+import portfolio.ian.com.leaguematchhistory.Adapters.OfflineRuneDatabaseAdapter;
+import portfolio.ian.com.leaguematchhistory.R;
 
 
 /**
@@ -39,7 +40,7 @@ public class LolRunes extends Fragment {
                              @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.activity_lol_runes, container, false);
 
-        listView = (ListView) v.findViewById(R.id.runeList);
+        listView = (ListView) v.findViewById(R.id.runeListView);
 
         offlineRuneDbHelper = new OfflineRuneDatabaseAdapter(getContext());
 
@@ -58,8 +59,7 @@ public class LolRunes extends Fragment {
         }
     }
 
-    Boolean checkInternetConnection(Context mContext)
-    {
+    Boolean checkInternetConnection(Context mContext) {
         ConnectivityManager connectivityManager = (ConnectivityManager) mContext.getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
         Boolean internetConnection = activeNetworkInfo != null && activeNetworkInfo.isConnected();
@@ -70,32 +70,32 @@ public class LolRunes extends Fragment {
         try {
             clearArrayList();
 
-                if (checkInternetConnection(getContext())) {
-                    for (int i = 0; i < Rune.runes.size(); i++) {
-                        Rune rune = new Rune(Rune.runes.get(i).runeId,Rune.runes.get(i).rank,
-                                Rune.runes.get(i).name, Rune.runes.get(i).description);
-                        runeArrayList.add(rune);
-                    }
-                } else if (!checkInternetConnection(getContext())) {
-                    runes = offlineRuneDbHelper.getAllData();
-                    for (int i = 0; i < runes.size(); i++) {
-                        Rune rune = new Rune(Long.valueOf(runes.get(i).split("runeId: ")[1].split(" rank: ")[0]),
-                                Long.valueOf(runes.get(i).split("rank: ")[1].split(" name: ")[0]),
-                                        runes.get(i).split("name: ")[1].split(" description: ")[0],
-                                        runes.get(i).split("description: ")[1]);
-                        runeArrayList.add(rune);
-                    }
+            if (checkInternetConnection(getContext())) {
+                for (int i = 0; i < Rune.runes.size(); i++) {
+                    Rune rune = new Rune(Rune.runes.get(i).runeId, Rune.runes.get(i).rank,
+                            Rune.runes.get(i).name, Rune.runes.get(i).description);
+                    runeArrayList.add(rune);
                 }
+            } else if (!checkInternetConnection(getContext())) {
+                runes = offlineRuneDbHelper.getAllData();
+                for (int i = 0; i < runes.size(); i++) {
+                    Rune rune = new Rune(Long.valueOf(runes.get(i).split("runeId: ")[1].split(" rank: ")[0]),
+                            Long.valueOf(runes.get(i).split("rank: ")[1].split(" name: ")[0]),
+                            runes.get(i).split("name: ")[1].split(" description: ")[0],
+                            runes.get(i).split("description: ")[1]);
+                    runeArrayList.add(rune);
+                }
+            }
 
             newAdapter = new RunesViewAdapter(getContext());
+            newAdapter.notifyDataSetChanged();
             listView.setAdapter(newAdapter);
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
-    void clearArrayList()
-    {
+    void clearArrayList() {
         runeArrayList = null;
         runeArrayList = new ArrayList<>();
     }
@@ -152,9 +152,7 @@ public class LolRunes extends Fragment {
                 runeName.setText(runeArrayList.get(position).name);
                 runeInfo.setText(runeArrayList.get(position).description);
 
-            }
-            catch (Exception e)
-            {
+            } catch (Exception e) {
                 e.printStackTrace();
             }
             return rowView;

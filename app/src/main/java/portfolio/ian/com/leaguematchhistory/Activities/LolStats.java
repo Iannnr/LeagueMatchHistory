@@ -16,16 +16,20 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import portfolio.ian.com.leaguematchhistory.*;
-import portfolio.ian.com.leaguematchhistory.Constants.*;
-import portfolio.ian.com.leaguematchhistory.DataHandling.*;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+
+import portfolio.ian.com.leaguematchhistory.Activities.ActivityDataHandling.Match;
+import portfolio.ian.com.leaguematchhistory.Activities.ActivityDataHandling.gameStats;
+import portfolio.ian.com.leaguematchhistory.Constants.GameStatsConstants;
+import portfolio.ian.com.leaguematchhistory.Constants.ToastMessage;
+import portfolio.ian.com.leaguematchhistory.DataHandling.ChampionList;
+import portfolio.ian.com.leaguematchhistory.DataHandling.TinyDB;
+import portfolio.ian.com.leaguematchhistory.R;
 
 
 /**
@@ -45,12 +49,9 @@ public class LolStats extends Fragment {
                              @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.activity_lol_stats, container, false);
 
-        listView = (ListView) v.findViewById(R.id.listView4);
+        listView = (ListView) v.findViewById(R.id.gameStatListView);
 
         thisActivity = getActivity();
-
-
-        //online = checkInternetConnection();
 
         updateUI();
 
@@ -58,16 +59,13 @@ public class LolStats extends Fragment {
     }
 
 
-    Boolean checkInternetConnection(Context context)
-    {
+    Boolean checkInternetConnection(Context context) {
         Boolean internetConnection = true;
         try {
             ConnectivityManager connectivityManager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
             NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
             internetConnection = activeNetworkInfo != null && activeNetworkInfo.isConnected();
-        }
-        catch (Exception e)
-        {
+        } catch (Exception e) {
             e.printStackTrace();
         }
         return internetConnection;
@@ -79,74 +77,73 @@ public class LolStats extends Fragment {
         if (!checkInternetConnection(thisContext)) {
             json = Match.jsonData.get(position);
         }
-            try {
-                if (json != null) {
-                    //Save information from matchInformation API call
-                    JSONObject matchDetails = new JSONObject(json);
+        try {
+            if (json != null) {
+                //Save information from matchInformation API call
+                JSONObject matchDetails = new JSONObject(json);
 
-                    if (matchDetails != null) {
-                        try {
+                if (matchDetails != null) {
+                    try {
 
-                            ArrayList<String> inGameStats = new ArrayList<>();
-                            ArrayList<String> inGameRunes = new ArrayList<>();
-                            ArrayList<String> inGameItems = new ArrayList<>();
-                            //search the "stats" object in the request to find all the relevant variables to use
-                            inGameStats.add(gameStats.summonerName = username);
-                            inGameStats.add(gameStats.champName = championList.championIDToName(Integer.parseInt(matchDetails.getString("championId"))));
-                            inGameStats.add(gameStats.kills = matchDetails.getJSONObject("stats").getString("kills"));
-                            inGameStats.add(gameStats.deaths = matchDetails.getJSONObject("stats").getString("deaths"));
-                            inGameStats.add(gameStats.assists = matchDetails.getJSONObject("stats").getString("assists"));
-                            inGameStats.add(gameStats.minionsKills = matchDetails.getJSONObject("stats").getString("minionsKilled"));
-                            inGameStats.add(gameStats.goldEarned = matchDetails.getJSONObject("stats").getString("goldEarned"));
-                            inGameStats.add(gameStats.doubleKills = matchDetails.getJSONObject("stats").getString("doubleKills"));
-                            inGameStats.add(gameStats.tripleKills = matchDetails.getJSONObject("stats").getString("tripleKills"));
-                            inGameStats.add(gameStats.quadraKills = matchDetails.getJSONObject("stats").getString("quadraKills"));
-                            inGameStats.add(gameStats.pentaKills = matchDetails.getJSONObject("stats").getString("pentaKills"));
-                            inGameStats.add(gameStats.largestKillingSpree = matchDetails.getJSONObject("stats").getString("largestKillingSpree"));
-                            inGameStats.add(gameStats.largestMultiKill = matchDetails.getJSONObject("stats").getString("largestMultiKill"));
-                            inGameStats.add(gameStats.totalDamageDealtToChampions = matchDetails.getJSONObject("stats").getString("totalDamageDealtToChampions"));
-                            inGameStats.add(gameStats.physicalDamageDealtToChampions = matchDetails.getJSONObject("stats").getString("physicalDamageDealtToChampions"));
-                            inGameStats.add(gameStats.magicDamageDealtToChampions = matchDetails.getJSONObject("stats").getString("magicDamageDealtToChampions"));
-                            inGameStats.add(gameStats.trueDamageDealtToChampions = matchDetails.getJSONObject("stats").getString("trueDamageDealtToChampions"));
-                            inGameStats.add(gameStats.totalDamageDealt = matchDetails.getJSONObject("stats").getString("totalDamageDealt"));
-                            inGameStats.add(gameStats.physicalDamageDealt = matchDetails.getJSONObject("stats").getString("physicalDamageDealt"));
-                            inGameStats.add(gameStats.magicDamageDealt = matchDetails.getJSONObject("stats").getString("magicDamageDealt"));
-                            inGameStats.add(gameStats.trueDamageDealt = matchDetails.getJSONObject("stats").getString("trueDamageDealt"));
-                            inGameStats.add(gameStats.towerKills = matchDetails.getJSONObject("stats").getString("towerKills"));
-                            inGameStats.add(gameStats.largestCriticalStrike = matchDetails.getJSONObject("stats").getString("largestCriticalStrike"));
-                            inGameItems.add(String.valueOf(matchDetails.getJSONObject("stats").getLong("item0")));
-                            inGameItems.add(String.valueOf(matchDetails.getJSONObject("stats").getLong("item1")));
-                            inGameItems.add(String.valueOf(matchDetails.getJSONObject("stats").getLong("item2")));
-                            inGameItems.add(String.valueOf(matchDetails.getJSONObject("stats").getLong("item3")));
-                            inGameItems.add(String.valueOf(matchDetails.getJSONObject("stats").getLong("item4")));
-                            inGameItems.add(String.valueOf(matchDetails.getJSONObject("stats").getLong("item5")));
-                            inGameItems.add(String.valueOf(matchDetails.getJSONObject("stats").getLong("item6")));
+                        ArrayList<String> inGameStats = new ArrayList<>();
+                        ArrayList<String> inGameRunes = new ArrayList<>();
+                        ArrayList<String> inGameItems = new ArrayList<>();
+                        //search the "stats" object in the request to find all the relevant variables to use
+                        inGameStats.add(gameStats.summonerName = username);
+                        inGameStats.add(gameStats.champName = championList.championIDToName(Integer.parseInt(matchDetails.getString("championId"))));
+                        inGameStats.add(gameStats.kills = matchDetails.getJSONObject("stats").getString("kills"));
+                        inGameStats.add(gameStats.deaths = matchDetails.getJSONObject("stats").getString("deaths"));
+                        inGameStats.add(gameStats.assists = matchDetails.getJSONObject("stats").getString("assists"));
+                        inGameStats.add(gameStats.minionsKills = matchDetails.getJSONObject("stats").getString("minionsKilled"));
+                        inGameStats.add(gameStats.goldEarned = matchDetails.getJSONObject("stats").getString("goldEarned"));
+                        inGameStats.add(gameStats.doubleKills = matchDetails.getJSONObject("stats").getString("doubleKills"));
+                        inGameStats.add(gameStats.tripleKills = matchDetails.getJSONObject("stats").getString("tripleKills"));
+                        inGameStats.add(gameStats.quadraKills = matchDetails.getJSONObject("stats").getString("quadraKills"));
+                        inGameStats.add(gameStats.pentaKills = matchDetails.getJSONObject("stats").getString("pentaKills"));
+                        inGameStats.add(gameStats.largestKillingSpree = matchDetails.getJSONObject("stats").getString("largestKillingSpree"));
+                        inGameStats.add(gameStats.largestMultiKill = matchDetails.getJSONObject("stats").getString("largestMultiKill"));
+                        inGameStats.add(gameStats.totalDamageDealtToChampions = matchDetails.getJSONObject("stats").getString("totalDamageDealtToChampions"));
+                        inGameStats.add(gameStats.physicalDamageDealtToChampions = matchDetails.getJSONObject("stats").getString("physicalDamageDealtToChampions"));
+                        inGameStats.add(gameStats.magicDamageDealtToChampions = matchDetails.getJSONObject("stats").getString("magicDamageDealtToChampions"));
+                        inGameStats.add(gameStats.trueDamageDealtToChampions = matchDetails.getJSONObject("stats").getString("trueDamageDealtToChampions"));
+                        inGameStats.add(gameStats.totalDamageDealt = matchDetails.getJSONObject("stats").getString("totalDamageDealt"));
+                        inGameStats.add(gameStats.physicalDamageDealt = matchDetails.getJSONObject("stats").getString("physicalDamageDealt"));
+                        inGameStats.add(gameStats.magicDamageDealt = matchDetails.getJSONObject("stats").getString("magicDamageDealt"));
+                        inGameStats.add(gameStats.trueDamageDealt = matchDetails.getJSONObject("stats").getString("trueDamageDealt"));
+                        inGameStats.add(gameStats.towerKills = matchDetails.getJSONObject("stats").getString("towerKills"));
+                        inGameStats.add(gameStats.largestCriticalStrike = matchDetails.getJSONObject("stats").getString("largestCriticalStrike"));
+                        inGameItems.add(String.valueOf(matchDetails.getJSONObject("stats").getLong("item0")));
+                        inGameItems.add(String.valueOf(matchDetails.getJSONObject("stats").getLong("item1")));
+                        inGameItems.add(String.valueOf(matchDetails.getJSONObject("stats").getLong("item2")));
+                        inGameItems.add(String.valueOf(matchDetails.getJSONObject("stats").getLong("item3")));
+                        inGameItems.add(String.valueOf(matchDetails.getJSONObject("stats").getLong("item4")));
+                        inGameItems.add(String.valueOf(matchDetails.getJSONObject("stats").getLong("item5")));
+                        inGameItems.add(String.valueOf(matchDetails.getJSONObject("stats").getLong("item6")));
 
-                            JSONArray runeArray = (matchDetails.getJSONArray("runes"));
-                            for (int i = 0; i < runeArray.length(); i++) {
-                                inGameRunes.add(String.valueOf(runeArray.getJSONObject(i).getLong("runeId")));
-                                inGameRunes.add(String.valueOf(runeArray.getJSONObject(i).getLong("rank")));
-                            }
-                            TinyDB tinydb = new TinyDB(thisContext);
-                            tinydb.putListString("myInGameStats", inGameStats);
-                            tinydb.putListString("inGameRunes", inGameRunes);
-                            tinydb.putListString("inGameItems", inGameItems);
-
-
-                        } catch (JSONException e) {
-                            ToastMessage.message(this.getContext(), e.toString());
+                        JSONArray runeArray = (matchDetails.getJSONArray("runes"));
+                        for (int i = 0; i < runeArray.length(); i++) {
+                            inGameRunes.add(String.valueOf(runeArray.getJSONObject(i).getLong("runeId")));
+                            inGameRunes.add(String.valueOf(runeArray.getJSONObject(i).getLong("rank")));
                         }
+                        TinyDB tinydb = new TinyDB(thisContext);
+                        tinydb.putListString("myInGameStats", inGameStats);
+                        tinydb.putListString("inGameRunes", inGameRunes);
+                        tinydb.putListString("inGameItems", inGameItems);
+
+
+                    } catch (JSONException e) {
+                        ToastMessage.message(this.getContext(), e.toString());
                     }
-
                 }
-            } catch (Exception d) {
-                d.printStackTrace();
+
             }
+        } catch (Exception d) {
+            d.printStackTrace();
         }
+    }
 
 
-    private void updateUI()
-    {
+    private void updateUI() {
         try {
             clearDataList();
 
@@ -174,7 +171,6 @@ public class LolStats extends Fragment {
             listView.setFocusableInTouchMode(false);
 
 
-
             //listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             //    @Override
             //    public void onItemClick(AdapterView<?> parent, View view,
@@ -182,21 +178,16 @@ public class LolStats extends Fragment {
             //    }
             //});
 
-        }
-        catch (ArrayIndexOutOfBoundsException e)
-        {
+        } catch (ArrayIndexOutOfBoundsException e) {
             e.printStackTrace();
         }
     }
 
-    void clearDataList()
-    {
+    void clearDataList() {
         try {
             listHash = null;
             listHash = new ArrayList<>();
-        }
-        catch (ArrayIndexOutOfBoundsException e)
-        {
+        } catch (ArrayIndexOutOfBoundsException e) {
             e.printStackTrace();
         }
 
@@ -208,11 +199,10 @@ class StatsListViewAdapter extends BaseAdapter {
     public ArrayList<HashMap<String, String>> list;
     Activity activity;
 
-    public StatsListViewAdapter(Activity activity, ArrayList<HashMap<String, String>> list)
-    {
+    public StatsListViewAdapter(Activity activity, ArrayList<HashMap<String, String>> list) {
         super();
-        this.activity=activity;
-        this.list=list;
+        this.activity = activity;
+        this.list = list;
     }
 
     @Override
@@ -230,7 +220,7 @@ class StatsListViewAdapter extends BaseAdapter {
         return 0;
     }
 
-    private class ViewHolder{
+    private class ViewHolder {
         TextView txtFirst;
         TextView txtSecond;
     }
@@ -242,9 +232,8 @@ class StatsListViewAdapter extends BaseAdapter {
 
         LayoutInflater inflater = activity.getLayoutInflater();
 
-        if (convertView == null)
-        {
-            convertView=inflater.inflate(R.layout.layout_stats_columns, null);
+        if (convertView == null) {
+            convertView = inflater.inflate(R.layout.layout_stats_columns, null);
             holder = new ViewHolder();
 
             holder.txtFirst = (TextView) convertView.findViewById(R.id.statsColumn);
@@ -252,9 +241,8 @@ class StatsListViewAdapter extends BaseAdapter {
 
             convertView.setTag(holder);
 
-        }
-        else{
-            holder=(ViewHolder) convertView.getTag();
+        } else {
+            holder = (ViewHolder) convertView.getTag();
         }
 
         HashMap<String, String> map = list.get(position);

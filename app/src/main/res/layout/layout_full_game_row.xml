@@ -12,8 +12,8 @@
         android:layout_marginLeft="0dp"
         android:layout_alignParentTop="true"
         android:layout_marginTop="0dp"
-        android:maxHeight="64dp"
-        android:maxWidth="64dp"
+        android:maxHeight="58dp"
+        android:maxWidth="58dp"
         android:adjustViewBounds="true" />
 
     <ImageView
@@ -23,8 +23,8 @@
         android:layout_alignParentTop="true"
         android:layout_alignParentEnd="true"
         android:src="@drawable/aatrox_square_"
-        android:maxWidth="64dp"
-        android:maxHeight="64dp"
+        android:maxWidth="58dp"
+        android:maxHeight="58dp"
         android:adjustViewBounds="true" />
 
     <TextView
@@ -33,9 +33,9 @@
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:text="Aurelion Sol"
         android:id="@+id/Summoner1Champ"
-        android:layout_toEndOf="@+id/Summoner1Icon"
+        android:textSize="14dp"
         android:layout_alignParentTop="true"
-        android:layout_alignBottom="@+id/Summoner1KDA" />
+        android:layout_toEndOf="@+id/Summoner1Icon" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -43,7 +43,9 @@
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:text="15/15/15"
         android:id="@+id/Summoner1KDA"
-        android:layout_above="@+id/Summoner1IGN"
+        android:textSize="14dp"
+        android:gravity="center"
+        android:layout_above="@+id/Summoner2IGN"
         android:layout_toEndOf="@+id/Summoner1Icon" />
 
     <TextView
@@ -52,8 +54,10 @@
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:text="15/15/15"
         android:id="@+id/Summoner2KDA"
+        android:textSize="14dp"
+        android:gravity="center"
         android:layout_below="@+id/Summoner2Champ"
-        android:layout_toStartOf="@+id/Summoner2Icon" />
+        android:layout_alignEnd="@+id/Summoner2Champ" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -62,7 +66,8 @@
         android:text="Aurelion Sol"
         android:id="@+id/Summoner2Champ"
         android:layout_alignParentTop="true"
-        android:layout_toStartOf="@+id/Summoner2Icon" />
+        android:layout_toStartOf="@+id/Summoner2Icon"
+        android:textSize="14dp" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -70,7 +75,8 @@
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:text="Summoner Name"
         android:id="@+id/Summoner1IGN"
-        android:layout_alignTop="@+id/Summoner2IGN"
+        android:textSize="14dp"
+        android:layout_below="@+id/Summoner1KDA"
         android:layout_toEndOf="@+id/Summoner1Icon" />
 
     <TextView
@@ -79,6 +85,7 @@
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:text="Summoner Name"
         android:id="@+id/Summoner2IGN"
+        android:textSize="14dp"
         android:layout_below="@+id/Summoner2KDA"
         android:layout_toStartOf="@+id/Summoner2Icon" />
 </RelativeLayout>

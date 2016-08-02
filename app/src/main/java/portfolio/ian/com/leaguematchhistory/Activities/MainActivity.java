@@ -17,11 +17,11 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import portfolio.ian.com.leaguematchhistory.*;
-import portfolio.ian.com.leaguematchhistory.Constants.*;
-import portfolio.ian.com.leaguematchhistory.DataHandling.*;
-
 import java.util.ArrayList;
+
+import portfolio.ian.com.leaguematchhistory.Constants.BitmapDecoding;
+import portfolio.ian.com.leaguematchhistory.DataHandling.APIKeyEncryption;
+import portfolio.ian.com.leaguematchhistory.R;
 
 public class MainActivity extends Activity {
 
@@ -86,66 +86,6 @@ public class MainActivity extends Activity {
 
             }
         }).start();
-
-    }
-
-    void showMenu() {
-        list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view,
-                                    int position, long id) {
-                Toast.makeText(getApplicationContext(),
-                        "Click ListItem Number " + position, Toast.LENGTH_LONG)
-                        .show();
-            }
-        });
-
-        String[] activities = new String[]{"Facebook", "Twitter", "Match History", "Camera", "Sensors", "Other", "Other", "Other", "Other", "Other", "Other", "Other",};
-
-        final ArrayList<String> arrayList = new ArrayList<>();
-        for (int i = 0; i < activities.length; ++i) {
-            arrayList.add(activities[i]);
-        }
-        final ArrayAdapter adapter = new ArrayAdapter(this,
-                android.R.layout.simple_list_item_1, arrayList);
-        list.setAdapter(adapter);
-
-        list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-
-            @Override
-            public void onItemClick(AdapterView<?> parent, final View view,
-                                    int position, long id) {
-                final String item = String.valueOf(parent.getItemIdAtPosition(position));
-                view.animate().setDuration(100).alpha(1)
-                        .withEndAction(new Runnable() {
-                            @Override
-                            public void run() {
-                                //ToastMessage.message(getApplicationContext(), item);
-                                switch (item) {
-                                    //case "Facebook":
-                                    case "0":
-                                        startActivity(facebook);
-                                        break;
-                                    case "1":
-                                        startActivity(twitter);
-                                        break;
-                                    case "2":
-                                        startActivity(matchHistory);
-                                        break;
-                                    case "3":
-                                        startActivity(camera);
-                                        break;
-                                    case "4":
-                                        startActivity(sensors);
-                                        break;
-                                    default:
-                                        break;
-                                }
-                            }
-                        });
-            }
-
-        });
 
     }
 

@@ -30,12 +30,12 @@
         <activity
             android:name=".Activities.ResultsDisplayNew"
             android:label="Results Display"
-            android:persistent="true"></activity>
+            android:persistent="true"/>
         <activity
             android:name=".Activities.matchHistoryActivity"
             android:label="In Game Stats"
             android:persistent="true"
-            android:theme="@android:style/Theme.Black.NoTitleBar"></activity>
+            android:theme="@android:style/Theme.Black.NoTitleBar"/>
     </application>
 
 </manifest>

@@ -1,4 +1,4 @@
-package portfolio.ian.com.leaguematchhistory.Activities;
+package portfolio.ian.com.leaguematchhistory.Activities.ActivityDataHandling;
 
 import java.util.ArrayList;
 
@@ -7,15 +7,15 @@ import java.util.ArrayList;
  */
 public class gameStats {
     //Summoner-related information
-    static String summonerName, champName, largestKillingSpree,
-        //Damage dealt
-        totalDamageDealtToChampions, physicalDamageDealtToChampions, magicDamageDealtToChampions,
-        trueDamageDealtToChampions, totalDamageDealt, physicalDamageDealt, magicDamageDealt,
-        trueDamageDealt, largestCriticalStrike,
-        //money related stats
-        goldEarned, minionsKills, towerKills, kills, deaths, assists,
-        //multikills
-        largestMultiKill, doubleKills, tripleKills, quadraKills, pentaKills;
+    public static String summonerName, champName, largestKillingSpree,
+    //Damage dealt
+    totalDamageDealtToChampions, physicalDamageDealtToChampions, magicDamageDealtToChampions,
+            trueDamageDealtToChampions, totalDamageDealt, physicalDamageDealt, magicDamageDealt,
+            trueDamageDealt, largestCriticalStrike,
+    //money related stats
+    goldEarned, minionsKills, towerKills, kills, deaths, assists,
+    //multikills
+    largestMultiKill, doubleKills, tripleKills, quadraKills, pentaKills;
     private ArrayList<String> primaryColumns = new ArrayList<>();
 
     /*public gameStats(String summonerName, String champName, String largestKillingSpree, String totalDamageDealtToChampions,
@@ -29,8 +29,7 @@ public class gameStats {
     }*/
 
 
-    public ArrayList<String> populatePrimaryColumn()
-    {
+    public ArrayList<String> populatePrimaryColumn() {
         primaryColumns.add("Summoner Name");
         primaryColumns.add("Champion Name");
         primaryColumns.add("Kills");

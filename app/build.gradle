@@ -18,7 +18,7 @@ android {
         applicationId "portfolio.ian.com.leaguematchhistory"
         minSdkVersion 19
         targetSdkVersion 23
-        versionCode 5
+        versionCode 6
         versionName "1.03"
     }
     buildTypes {

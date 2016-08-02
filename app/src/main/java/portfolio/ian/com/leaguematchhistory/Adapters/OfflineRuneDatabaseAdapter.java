@@ -27,27 +27,25 @@ public class OfflineRuneDatabaseAdapter {
         return id;
     }
 
-    public void resetData()
-    {
+    public void resetData() {
         SQLiteDatabase db = dbHelper.getWritableDatabase();
 
-        String[] columns = { dbHelper.UID, dbHelper.NAME};
+        String[] columns = {dbHelper.UID, dbHelper.NAME};
         Cursor cursor = db.query(databaseHelper.TABLE_NAME, columns, null, null, null, null, null);
-        while(cursor.moveToNext()) //while there are fields in database, loop through to show all saved names
+        while (cursor.moveToNext()) //while there are fields in database, loop through to show all saved names
         {
-            dbHelper.onUpgrade(db, databaseHelper.DATABASE_Version, databaseHelper.DATABASE_Version+1);
+            dbHelper.onUpgrade(db, databaseHelper.DATABASE_Version, databaseHelper.DATABASE_Version + 1);
         }
     }
 
-    public ArrayList<String> getAllData()
-    {
+    public ArrayList<String> getAllData() {
         SQLiteDatabase db = dbHelper.getWritableDatabase();
         ArrayList<String> data = new ArrayList<>();
 
         //select _id, Name FROM myUsernameTable
-        String[] columns = { dbHelper.UID, dbHelper.NAME};
+        String[] columns = {dbHelper.UID, dbHelper.NAME};
         Cursor cursor = db.query(databaseHelper.TABLE_NAME, columns, null, null, null, null, null);
-        while(cursor.moveToNext()) //while there are fields in database, loop through to show all saved names
+        while (cursor.moveToNext()) //while there are fields in database, loop through to show all saved names
         {
             String name = cursor.getString(1);
             data.add(name);
@@ -55,11 +53,10 @@ public class OfflineRuneDatabaseAdapter {
         return data;
     }
 
-    public int getSize()
-    {
+    public int getSize() {
         //int size = 0;
         SQLiteDatabase db = dbHelper.getWritableDatabase();
-        String[] columns = { dbHelper.UID, dbHelper.NAME};
+        String[] columns = {dbHelper.UID, dbHelper.NAME};
         Cursor cursor = db.query(databaseHelper.TABLE_NAME, columns, null, null, null, null, null);
         //size = cursor.getCount();
         return cursor.getCount();
@@ -87,12 +84,10 @@ public class OfflineRuneDatabaseAdapter {
         @Override
         public void onCreate(SQLiteDatabase db) {
 
-            try
-            {
+            try {
                 db.execSQL(CREATE_TABLE); //if onCreate statement is changed, change version number
                 //ToastMessage.message(context, "Offline database created!");
-            }
-            catch (SQLiteException e) {
+            } catch (SQLiteException e) {
 
             }
         }

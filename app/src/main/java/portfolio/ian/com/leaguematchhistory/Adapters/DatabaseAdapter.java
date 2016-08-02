@@ -31,24 +31,28 @@ public class DatabaseAdapter {
         return id;
     }
 
-    public String getAllData()
-    {
+    public String getAllData() {
         SQLiteDatabase db = dbHelper.getWritableDatabase();
 
         //select _id, Name FROM myUsernameTable
-        String[] columns = { dbHelper.UID, dbHelper.NAME};
+        String[] columns = {dbHelper.UID, dbHelper.NAME};
         Cursor cursor = db.query(databaseHelper.TABLE_NAME, columns, null, null, null, null, null);
         StringBuffer stringBuffer = new StringBuffer();
-        while(cursor.moveToNext()) //while there are fields in database, loop through to show all saved names
+        while (cursor.moveToNext()) //while there are fields in database, loop through to show all saved names
         {
             int columnID = cursor.getInt(0);
             String name = cursor.getString(1);
-            stringBuffer.append(columnID+" "+name+"\n");
+            stringBuffer.append(columnID + " " + name + "\n");
         }
         return stringBuffer.toString();
     }
 
-
+    public String deleteAllEntries() {
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+        db.execSQL(dbHelper.DROP_TABLE); //drop/remove old table
+        dbHelper.onCreate(db); //create new table using updated parameters
+        return "All entries deleted";
+    }
 
     //Inner class so that
     //Database parameters
@@ -72,12 +76,10 @@ public class DatabaseAdapter {
         @Override
         public void onCreate(SQLiteDatabase db) {
 
-            try
-            {
+            try {
                 db.execSQL(CREATE_TABLE); //if onCreate statement is changed, change version number
                 //ToastMessage.message(context, "New database created!");
-            }
-            catch (SQLiteException e) {
+            } catch (SQLiteException e) {
 
             }
         }

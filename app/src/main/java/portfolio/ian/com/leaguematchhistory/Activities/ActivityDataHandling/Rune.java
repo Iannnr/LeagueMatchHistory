@@ -1,30 +1,28 @@
-package portfolio.ian.com.leaguematchhistory.Activities;
+package portfolio.ian.com.leaguematchhistory.Activities.ActivityDataHandling;
 
 import android.content.res.Resources;
 import android.graphics.drawable.Drawable;
 
-import portfolio.ian.com.leaguematchhistory.*;
-
 import java.util.ArrayList;
+
+import portfolio.ian.com.leaguematchhistory.R;
 
 /**
  * Created by Ian on 16/06/2016.
  */
 public class Rune {
-    public  Long runeId, rank;
-    public  String name, description;
+    public Long runeId, rank;
+    public String name, description;
     public static ArrayList<Rune> runes = new ArrayList<>();
 
-    public Rune(Long runeId, Long rank, String name, String description)
-    {
+    public Rune(Long runeId, Long rank, String name, String description) {
         this.runeId = runeId;
         this.rank = rank;
         this.name = name;
         this.description = description;
     }
 
-    static Drawable runeIdToImage(Resources resource, long runeID)
-    {
+    public static Drawable runeIdToImage(Resources resource, long runeID) {
         String tempRuneId = String.valueOf(runeID);
         switch (tempRuneId) {
             case "5001":

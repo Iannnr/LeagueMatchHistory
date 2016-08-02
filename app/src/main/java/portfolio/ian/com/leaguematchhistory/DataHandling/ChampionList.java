@@ -276,9 +276,8 @@ public class ChampionList {
         }
     }
 
-    public String mapIdName(int mapId)
-    {
-        switch(mapId) {
+    public String mapIdName(int mapId) {
+        switch (mapId) {
             case 10:
                 return "Twisted Treeline";
             case 11:

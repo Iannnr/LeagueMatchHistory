@@ -49,7 +49,7 @@ public class httpConnect {
 
                     // loop through returned data line by line and append to stringbuilder 'sb' variable
                     while ((line = br.readLine()) != null) {
-                        sb.append(line+"\n");
+                        sb.append(line + "\n");
                     }
                     br.close();
 
@@ -100,7 +100,7 @@ public class httpConnect {
 
                     // loop through returned data line by line and append to stringbuilder 'sb' variable
                     while ((line = br.readLine()) != null) {
-                        sb.append(line+"\n");
+                        sb.append(line + "\n");
                     }
                     br.close();
 

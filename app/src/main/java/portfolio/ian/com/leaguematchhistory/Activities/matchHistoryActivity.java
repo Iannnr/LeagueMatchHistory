@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.Point;
 import android.graphics.drawable.BitmapDrawable;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
@@ -13,8 +12,6 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.ViewPager;
-import android.util.DisplayMetrics;
-import android.view.Display;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.Surface;
@@ -22,21 +19,24 @@ import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
-import portfolio.ian.com.leaguematchhistory.*;
-import portfolio.ian.com.leaguematchhistory.Adapters.*;
-import portfolio.ian.com.leaguematchhistory.Constants.*;
-import portfolio.ian.com.leaguematchhistory.DataHandling.*;
-
-import org.apache.commons.lang3.StringUtils;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.commons.*;
+import portfolio.ian.com.leaguematchhistory.Activities.ActivityDataHandling.Match;
+import portfolio.ian.com.leaguematchhistory.Activities.ActivityDataHandling.Rune;
+import portfolio.ian.com.leaguematchhistory.Activities.ActivityDataHandling.SummonerStats;
+import portfolio.ian.com.leaguematchhistory.Adapters.FragmentPagerAdapter;
+import portfolio.ian.com.leaguematchhistory.Adapters.OfflineDatabaseAdapter;
+import portfolio.ian.com.leaguematchhistory.Adapters.OfflineRuneDatabaseAdapter;
+import portfolio.ian.com.leaguematchhistory.Constants.Participant;
+import portfolio.ian.com.leaguematchhistory.Constants.ToastMessage;
+import portfolio.ian.com.leaguematchhistory.DataHandling.APIKeyEncryption;
+import portfolio.ian.com.leaguematchhistory.DataHandling.httpConnect;
+import portfolio.ian.com.leaguematchhistory.R;
 
 
 public class matchHistoryActivity extends FragmentActivity {
@@ -52,7 +52,7 @@ public class matchHistoryActivity extends FragmentActivity {
     OfflineRuneDatabaseAdapter offlineRuneDbHelper;
     ChampionSplashHeader championHeader = new ChampionSplashHeader();
     int position;
-    private String APIKey = "";
+    private String APIKey = "", fullGameJSON;
     static Boolean backgroundLoaded = false;
     static BitmapDrawable background;
     RelativeLayout relativeLayout;
@@ -72,6 +72,8 @@ public class matchHistoryActivity extends FragmentActivity {
             username = prefs.getString("user", username);
             region = extras.getString("region");
             champName = extras.getString("champion");
+            fullGameJSON = extras.getString("matchJSON");
+            SummonerStats.individualGameJSON = SummonerStats.fullGameJson.get(position);
         }
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
@@ -83,10 +85,14 @@ public class matchHistoryActivity extends FragmentActivity {
 
         tabbedView = (ViewPager) findViewById(R.id.view_pager);
         //tabbedView.setBackground(championHeader.champNamePhoto(getResources(), champName));
-
-        new AsyncTaskParseJSON().execute();
-        String test = StringUtils.capitalize(championHeader.getChampionSkinName(champName.replace(" ", "")));
-        new DownloadImage().execute("http://ddragon.leagueoflegends.com/cdn/img/champion/splash/" + test + ".jpg");
+        try {
+            new AsyncTaskParseJSON().execute();
+            String test = (championHeader.getChampionSkinName(champName));
+            new DownloadImage().execute("http://ddragon.leagueoflegends.com/cdn/img/champion/splash/" + test + ".jpg");
+        } catch (Exception e) {
+            e.printStackTrace();
+            int x = 0;
+        }
     }
 
     void setLayoutBackground(RelativeLayout relativeLayout, BitmapDrawable bitmap) {
@@ -137,7 +143,6 @@ public class matchHistoryActivity extends FragmentActivity {
 
             if (internetConnection) {
                 jsonData.add(parseJSON.callAPI(matchHistoryURL));
-            } else {
             }
             return jsonData;
         }
@@ -153,8 +158,6 @@ public class matchHistoryActivity extends FragmentActivity {
                     for (int i = 0; i < offlineDbHelper.getSize(); i++) {
                         Match.jsonData.add(offlineDbHelper.getAllData().get(i));
                     }
-                } else {
-
                 }
             }
         }
