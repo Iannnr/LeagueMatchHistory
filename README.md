@@ -13,3 +13,10 @@ Current views include Match History in the format of:
 4. A show of what items the player ended the game with, with On-Click information about each individual item
 
 5. The runes used by the player.
+
+App currently shows use of:
+- Custom list adapter including one use of Hashmaps
+- Fragment adapter and manager to handle the scrolling between 3 fragments
+- Constructors with ArrayLists of objects
+- Use of JSON data handling
+- Differing layouts for landscape and portrait views
