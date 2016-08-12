@@ -19,4 +19,5 @@ App currently shows use of:
 - Fragment adapter and manager to handle the scrolling between 3 fragments
 - Constructors with ArrayLists of objects
 - Use of JSON data handling
+- Retreiving image information and downloading from JSON data and applying to imageViews programmatically
 - Differing layouts for landscape and portrait views
